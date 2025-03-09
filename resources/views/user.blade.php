@@ -25,8 +25,8 @@
                 <td>{{ $d->level->level_kode }}</td>
                 <td>{{ $d->level->level_nama }}</td>
                 <td>
-                    <a href={{ url('/user/ubah/' . $d->user_id) }}">Ubah</a>
-                    <a href={{ url('/user/hapus/' . $d->user_id) }}">Hapus</a>
+                    <a href={{ url('/user/ubah/' . $d->user_id) }}>Ubah</a>
+                    <a href={{ url('/user/hapus/' . $d->user_id) }}>Hapus</a>
                 </td>
             </tr>
             @endforeach
