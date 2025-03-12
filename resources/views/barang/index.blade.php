@@ -78,28 +78,28 @@
                     },{
                     data: "barang_nama", 
                     className: "",
-                    orderable: true, // orderable: true, jika ingin kolom ini bisa diurutkan
-                    searchable: true // searchable: true, jika ingin kolom ini bisa dicari
+                    orderable: true, 
+                    searchable: true 
                     },{
                     data: "kategori.kategori_nama", 
                     className: "",
-                    orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
-                    searchable: false // searchable: true, jika ingin kolom ini bisa dicari
+                    orderable: false, 
+                    searchable: false 
                     },{
                     data: "harga_beli", 
                     className: "",
-                    orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
-                    searchable: false // searchable: true, jika ingin kolom ini bisa dicari
+                    orderable: false, 
+                    searchable: false 
                     },{ 
                     data: "harga_jual", 
                     className: "",
-                    orderable: false, // orderable: true, jika ingin kolom ini bisa diurutkan
-                    searchable: false // searchable: true, jika ingin kolom ini bisa dicari
+                    orderable: false, 
+                    searchable: false 
                     },{    
                     data: "aksi", 
                     className: "",
-                    orderable: false, // orderable: true, jika ingin kolom ini bisa  diurutkan
-                    searchable: false // searchable: true, jika ingin kolom ini bisa dicari
+                    orderable: false, 
+                    searchable: false 
 
                     }
                 ]

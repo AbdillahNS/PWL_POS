@@ -51,6 +51,110 @@ class KategoriController extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
+    public function create()
+    {
+        $breadcrumb = (object)[
+            'title' => 'Tambah Kategori',
+            'list' => ['Home', 'Kategori', 'Tambah']
+        ];
+        $page = (object)[
+            'title' => 'Tambah Kategori baru'
+        ];
+
+        $kategori = KategoriModel::all(); // ambil data kategori untuk ditampilkan di form
+        $activeMenu = 'kategori'; //set menu yang sedang aktif
+
+        return view('kategori.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
+    }
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kategori_kode'   => 'required|string|min:3|unique:m_kategori,kategori_kode',
+            'kategori_nama'   => 'required|string|max:100',
+
+        ]);
+
+        KategoriModel::create([
+            'kategori_kode'    => $request->kategori_kode,
+            'kategori_nama'    => $request->kategori_nama,
+
+        ]);
+
+        return redirect('/kategori')->with('success', 'Data Kategori berhasil disimpan');
+    }
+
+    public function show(string $id)
+    {
+        $kategori = KategoriModel::find($id);
+
+        $breadcrumb = (object)[
+            'title' => 'Detail kategori',
+            'list' => ['Home', 'kategori', 'Detail']
+        ];
+
+        $page = (object)[
+            'title' => 'Detail Kategori'
+        ];
+
+        $activeMenu = 'kategori';
+        return view('kategori.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
+    }
+
+
+    public function edit(string $id)
+    {
+        $kategori = KategoriModel::find($id);
+
+        $breadcrumb = (object)[
+            'title' => 'Edit Kategori',
+            'list' => ['Home', 'Kategori', 'Edit']
+        ];
+
+        $page = (object)[
+            'title' => 'Edit Kategori'
+        ];
+
+        $activeMenu = 'kategori';
+        return view('kategori.edit', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'kategori_kode'    => 'required|string|min:3|unique:m_kategori,kategori_kode,' . $id . ',kategori_id',
+            'kategori_nama'    => 'required|string|max:100',
+
+        ]);
+
+        KategoriModel::find($id)->update([
+            'kategori_kode'    => $request->kategori_kode,
+            'kategori_nama'    => $request->kategori_nama,
+
+        ]);
+
+        return redirect('/kategori')->with('success', 'Data kategori berhasil diubah');
+    }
+
+    public function destroy(string $id)
+    {
+        $check = KategoriModel::find($id);
+        if (!$check) {
+            return redirect('/kategori')->with('error', 'Data Kategori tidak ditemukan');
+        }
+
+        try {
+            KategoriModel::destroy($id); // Hapus data kategori
+
+            return redirect('/kategori')->with('success', 'Data Kategori berhasil dihapus');
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Jika terjadi error ketika menghapus data , redirect kemabli ke halaman dengan membawa pesan error
+            return redirect('/kategori')->with('errror', 'Data kategori gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
+        }
+    }
+
         // $data = [
         //     'kategori_kode' => 'SNK',
         //     'kategori_nama' => 'Snack/Makanan Ringan',
