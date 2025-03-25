@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login Pengguna</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -82,8 +83,8 @@
         $(document).ready(function() {
             $("#form-login").validate({
                 rules: {
-                    username: { required: true, minlength: 4, maxlength: 20 },
-                    password: { required: true, minlength: 6, maxlength: 20 }
+                    username: { required: true },
+                    password: { required: true }
                 },
                 submitHandler: function(form) {
                     $.ajax({
@@ -119,10 +120,10 @@
                     error.addClass('invalid-feedback');
                     element.closest('.input-group').append(error);
                 },
-                highlight: function(element) {
+                highlight: function(element, errorClass, validClass) {
                     $(element).addClass('is-invalid');
                 },
-                unhighlight: function(element) {
+                unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
                 }
             });
