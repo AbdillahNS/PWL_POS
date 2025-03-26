@@ -29,6 +29,8 @@ Route::pattern('id', '[0-9]+'); // ketika ada parameter {id} maka hanya berupa a
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'postRegister']);
 
 Route::middleware(['auth'])->group(function () { // semua rute di dalam group ini harus login dulu
     
@@ -37,8 +39,6 @@ Route::middleware(['auth'])->group(function () { // semua rute di dalam group in
     });
     
     Route::get('/', [WelcomeController::class, 'index']);
-
-    // route level
 
     // artinya semua route didalam group ini harus punya role ADM (admin)
     Route::middleware(['authorize:ADM'])->group(function () {
