@@ -33,6 +33,12 @@
           <p>Data User</p>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{ url('/') }}" class="nav-link {{ ($activeMenu == '') ? 'active' : '' }}">
+          <i class="nav-icon far fa-user"></i>
+          <p>Ubah Foto Profile</p>
+        </a>
+      </li>
       <li class="nav-header">Data Barang</li>
       <li class="nav-item">
         <a href="{{ url('/kategori') }}" class="nav-link {{ ($activeMenu == 'kategori') ? 'active' : '' }}">

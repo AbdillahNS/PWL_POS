@@ -8,8 +8,8 @@ use App\Models\KategoriModel;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Hash; 
 use Illuminate\Support\Facades\Validator; 
-use PhpOffice\PhpSpreadsheet\IOFactory; 
 use Yajra\DataTables\Facades\DataTables;
+use PhpOffice\PhpSpreadsheet\IOFactory; 
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarangController extends Controller
@@ -425,6 +425,6 @@ class BarangController extends Controller
         $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
         $pdf->render();
 
-        return $pdf->stream('Dara Barang '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream('Data Barang '.date('Y-m-d H:i:s').'.pdf');
     }
 }
