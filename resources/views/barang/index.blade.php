@@ -82,7 +82,7 @@
                 type: "POST",
                 dataType: "json",
                 data: function (d) {
-                    d.filter_kategori = $('.filter_kategori').val();
+                    d.kategori_id = $('.filter_kategori').val();
                 }
             },
             columns: [
