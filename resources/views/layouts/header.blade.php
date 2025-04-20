@@ -13,7 +13,7 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto align-items-center">
       <!-- Navbar Search -->
       <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
@@ -131,5 +131,22 @@
           <i class="fas fa-th-large"></i>
         </a>
       </li>
+
+      <!-- Profile Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" role="button">
+            @php
+                $avatar = session('avatar_temp') ?? asset('images/avatars/default.png');
+            @endphp
+            <img src="{{ $avatar }}?v={{ time() }}" id="avatar-img" class="img-circle" style="width: 30px; height: 30px; object-fit: cover;">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modal-ubah-profil">
+                Ubah Foto Profil
+            </a>
+        </div>
+      </li>
+      <!-- Modal ubah profil -->
+      @include('profil.ubah_profil') <!-- Tempatkan modal di luar dropdown -->
     </ul>
   </nav>

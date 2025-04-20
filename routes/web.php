@@ -32,6 +32,7 @@ Route::post('login', [AuthController::class, 'postLogin']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'postRegister']);
+Route::post('/profil', [WelcomeController::class, 'update_profil']); // update profil
 
 Route::middleware(['auth'])->group(function () { // semua rute di dalam group ini harus login dulu
     
