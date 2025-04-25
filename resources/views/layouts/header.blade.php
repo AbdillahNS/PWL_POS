@@ -46,7 +46,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src=" " alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Brad Diesel
@@ -62,7 +62,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src=" " alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   John Pierce
@@ -78,7 +78,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src=" " alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Nora Silvester
@@ -136,9 +136,15 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#" role="button">
             @php
-                $avatar = session('avatar_temp') ?? asset('images/avatars/default.png');
+                $avatar = session('avatar_temp');
             @endphp
-            <img src="{{ $avatar }}?v={{ time() }}" id="avatar-img" class="img-circle" style="width: 30px; height: 30px; object-fit: cover;">
+            @if ($avatar)
+                <img src="{{ $avatar }}?v={{ time() }}" id="avatar-img" class="img-circle" style="width: 30px; height: 30px; object-fit: cover;">
+            @else
+                <div id="avatar-img" class="img-circle bg-secondary d-flex justify-content-center align-items-center" style="width: 30px; height: 30px; border-radius: 50%; color: white;">
+                  <i class="fas fa-user"></i>
+              </div>
+            @endif
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modal-ubah-profil">

@@ -42,7 +42,7 @@ class WelcomeController extends Controller
 
             // Membuat nama unik untuk file
             $nama_file = 'avatar_' . time() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/avatars', $nama_file);
+            $file->storeAs('public/avatars', $nama_file);
 
             // Menghasilkan URL file
             $foto_url = asset('storage/avatars/' . $nama_file);

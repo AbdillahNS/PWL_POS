@@ -139,10 +139,8 @@
             ]
         });
 
-        $('#table-barang_filter input').unbind().bind().on('keyup', function (e) {
-            if (e.keyCode == 13) {
-                tableBarang.search(this.value).draw();
-            }
+        $('#table-barang_filter input').unbind().bind().on('keyup', function () {
+            tableBarang.search(this.value).draw();
         });
 
         $('.filter_kategori').change(function () {

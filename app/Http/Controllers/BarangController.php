@@ -43,12 +43,12 @@ class BarangController extends Controller
         return DataTables::of($barangs)
             ->addIndexColumn() // Menambahkan kolom index / no urut (default nmaa kolom: DT_RowINdex)
             ->addColumn('aksi', function ($barang) {
-                // $btn  = '<a href="' . url('/barang/' . $barang->barang_id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                $btn  = '<a href="' . url('/barang/' . $barang->barang_id) . '" class="btn btn-info btn-sm">Detail</a> ';
                 // $btn .= '<a href="' . url('/barang/' . $barang->barang_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
                 // $btn .= '<form class="d-inline-block" method="POST" action="'. url('/barang/'.$barang->barang_id).'">' . csrf_field() . method_field('DELETE') . 
                 // '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah anda yakin menghapus data ini?\');">Hapus</button></form>';
 
-                $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
+                // $btn  = '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> '; 
                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> '; 
                 $btn .= '<button onclick="modalAction(\''.url('/barang/' . $barang->barang_id . '/delete_ajax').'\')"  class="btn btn-danger btn-sm">Hapus</button> '; 
                 return $btn;
@@ -98,22 +98,22 @@ class BarangController extends Controller
     //     return redirect('/barang')->with('success', 'Data Level berhasil disimpan');
     // }
 
-    // public function show(string $id)
-    // {
-    //     $barang = BarangModel::with('kategori')->find($id);
+    public function show(string $id)
+    {
+        $barang = BarangModel::with('kategori')->find($id);
 
-    //     $breadcrumb = (object)[
-    //         'title' => 'Detail barang',
-    //         'list' => ['Home', 'barang', 'Detail']
-    //     ];
+        $breadcrumb = (object)[
+            'title' => 'Detail barang',
+            'list' => ['Home', 'barang', 'Detail']
+        ];
 
-    //     $page = (object)[
-    //         'title' => 'Detail Barang'
-    //     ];
+        $page = (object)[
+            'title' => 'Detail Barang'
+        ];
 
-    //     $activeMenu = 'barang';
-    //     return view('barang.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'barang' => $barang, 'activeMenu' => $activeMenu]);
-    // }
+        $activeMenu = 'barang';
+        return view('barang.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'barang' => $barang, 'activeMenu' => $activeMenu]);
+    }
 
 
     // public function edit(string $id)
@@ -209,7 +209,6 @@ class BarangController extends Controller
                 'message' => 'Data barang berhasil disimpan'
             ]);
         }
-
         redirect('/');
     }
 
@@ -257,7 +256,6 @@ class BarangController extends Controller
                 'message' => 'Data barang tidak ditemukan'
             ]);
         }
-
         return redirect('/');
     }
 
