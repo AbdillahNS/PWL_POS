@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PenjualanModel;
 use App\Models\PenjualanDetailModel;
+use App\Models\BarangModel;
 use App\Models\UserModel;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -78,8 +79,12 @@ class PenjualanController extends Controller
 
     public function create_ajax(){
         $user = UserModel::select('user_id', 'username')->get();
-        
-        return view('penjualan.create_ajax')->with('user', $user);
+        $barangs = BarangModel::select('barang_id', 'barang_nama', 'harga_jual')->get();
+
+        return view('penjualan.create_ajax')->with([
+            'user' => $user,
+            'barangs' => $barangs
+        ]);
     }
 
     public function store_ajax(Request $request)
@@ -89,10 +94,12 @@ class PenjualanController extends Controller
                 'pembeli'           => 'required|string|max:100',
                 'penjualan_kode'    => 'required|string|unique:t_penjualan,penjualan_kode',
                 'tanggal_penjualan' => 'nullable|date',
+                'barang_id.*'       => 'required|exists:m_barang,barang_id', 
+                'detail_jumlah.*'   => 'required|numeric|min:1',
             ];
-
+    
             $validator = Validator::make($request->all(), $rules);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'status'    => false,
@@ -100,15 +107,36 @@ class PenjualanController extends Controller
                     'msgField'  => $validator->errors(),
                 ]);
             }
-
+    
             try {
-                PenjualanModel::create([
+                $penjualan = PenjualanModel::create([
                     'user_id'           => auth()->id(),
                     'pembeli'           => $request->pembeli,
                     'penjualan_kode'    => $request->penjualan_kode,
-                    'tanggal_penjualan' => $request->tanggal_penjualan ?: now()->toDateString(), // Default ke tanggal hari ini
+                    'tanggal_penjualan' => $request->tanggal_penjualan ?: now()->toDateString(),
                 ]);
-
+    
+                // Simpan data detail penjualan
+                $barangIds = $request->input('barang_id', []);
+                $detailJumlah = $request->input('detail_jumlah', []);
+                $detailHarga = $request->input('detail_harga', []);
+    
+                $details = [];
+                foreach ($barangIds as $index => $barangId) {
+                    $details[] = [
+                        'penjualan_id' => $penjualan->penjualan_id,
+                        'barang_id'    => $barangId,
+                        'jumlah'       => $detailJumlah[$index],
+                        'harga'        => $detailHarga[$index],
+                        'created_at'   => now(),
+                        'updated_at'   => now(),
+                    ];
+                }
+    
+                if (!empty($details)) {
+                    PenjualanDetailModel::insert($details); // Insert semua detail sekaligus
+                }
+    
                 return response()->json([
                     'status'    => true,
                     'message'   => 'Data penjualan berhasil disimpan',
@@ -182,6 +210,7 @@ class PenjualanController extends Controller
         try {
             $penjualan = PenjualanModel::find($id);
             if ($penjualan) {
+                $penjualan->penjualan_detail()->delete();
                 $penjualan->delete();
                 return response()->json([
                     'status' => true,
@@ -203,16 +232,18 @@ class PenjualanController extends Controller
 
     public function detail_ajax(string $id)
     {
-        $penjualan = PenjualanModel::with(['penjualan_detail.barang'])->find($id);
+        $penjualan = PenjualanModel::with(['penjualan_detail.barang:barang_id,barang_nama,harga_jual'])
+        ->select('penjualan_id', 'pembeli', 'penjualan_kode')
+        ->find($id);
 
-        if (!$penjualan) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Data penjualan tidak ditemukan'
-            ]);
-        }
+    if (!$penjualan) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data penjualan tidak ditemukan'
+        ]);
+    }
 
-        return view('penjualan.detail_ajax', compact('penjualan'));
+    return view('penjualan.detail_ajax', ['penjualan' => $penjualan]);
     }
 
     public function import() 
